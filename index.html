@@ -4,157 +4,334 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NettiHubi</title>
+
+<title>NettiHubi | Hyödyllinen nettipalvelu</title>
+<meta name="description" content="NettiHubi tarjoaa päivän faktoja, laskimen, piin desimaalit, muistilistan ja hyödyllisiä linkkejä.">
+<meta name="keywords" content="NettiHubi, päivän fakta, laskin, piin desimaalit, työkalut">
+<meta name="author" content="NettiHubi">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#101426">
+
 <style>
+:root {
+  --bg:#101426;
+  --panel:#191f36;
+  --panel2:#202943;
+  --blue:#648cff;
+  --purple:#9b78ff;
+  --text:#f4f5ff;
+  --muted:#a3acc5;
+  --border:rgba(255,255,255,.09);
+}
+
 * {box-sizing:border-box}
+
 body {
   margin:0;
-  font-family:Arial,sans-serif;
-  background:#101827;
-  color:white;
+  font-family:Inter,Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 0%,#25204b 0%,transparent 38%),
+    radial-gradient(ellipse at 95% 30%,#182d50 0%,transparent 35%),
+    var(--bg);
+  color:var(--text);
+  min-height:100vh;
 }
+
 header {
-  padding:25px;
-  text-align:center;
-  background:#192943;
+  padding:23px 7%;
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  background:rgba(16,20,38,.8);
 }
-header h1 {font-size:36px;margin:0}
-header p {color:#b8c6dc}
+
+.logo {
+  font-size:25px;
+  font-weight:800;
+  letter-spacing:-1px;
+}
+
+.logo span {color:var(--blue)}
+
+.header-tag {
+  color:var(--muted);
+  font-size:13px;
+}
+
 main {
-  max-width:950px;
-  margin:35px auto;
-  padding:15px;
+  max-width:1100px;
+  margin:55px auto;
+  padding:0 22px;
 }
-.search {display:flex;gap:10px}
-input,button {
-  padding:13px;
-  border:0;
-  border-radius:9px;
+
+.hero {
+  margin-bottom:35px;
+}
+
+.hero h1 {
+  font-size:clamp(34px,6vw,54px);
+  margin:0 0 12px;
+  letter-spacing:-2px;
+}
+
+.hero h1 span {
+  background:linear-gradient(90deg,#75a1ff,#b18aff);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.hero p {
+  color:var(--muted);
   font-size:16px;
+  line-height:1.7;
 }
-input {flex:1;min-width:0}
-button {
-  background:#3978ed;
-  color:white;
-  cursor:pointer;
-}
-button:hover {background:#245ac0}
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
+
+.search {
+  display:flex;
+  gap:10px;
   margin-top:25px;
 }
+
+input {
+  min-width:0;
+  width:100%;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:#111a2d;
+  color:white;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus {
+  border-color:var(--blue);
+}
+
+button {
+  padding:13px 18px;
+  border:0;
+  border-radius:11px;
+  background:linear-gradient(120deg,#547df4,#8767ed);
+  color:white;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+  white-space:nowrap;
+}
+
+button:hover {
+  transform:translateY(-2px);
+  filter:brightness(1.12);
+}
+
+.section-title {
+  margin:40px 0 17px;
+  font-size:21px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+
 .card {
-  background:#1c2b43;
-  padding:22px;
-  border-radius:15px;
+  background:linear-gradient(145deg,rgba(32,41,67,.96),rgba(24,30,52,.96));
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:23px;
+  box-shadow:0 12px 35px rgba(0,0,0,.12);
+  min-width:0;
+  transition:.2s;
+}
+
+.card:hover {
+  border-color:rgba(120,150,255,.35);
+  transform:translateY(-2px);
+}
+
+.card h2 {
+  font-size:19px;
+  margin:0 0 17px;
+}
+
+.card p {
+  color:#d4d9eb;
+  line-height:1.7;
+}
+
+.fact {
+  font-size:17px;
+  min-height:65px;
+}
+
+.small {
+  color:var(--muted)!important;
+  font-size:12px;
+}
+
+.links {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.links a {
+  padding:12px;
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--border);
+  border-radius:10px;
+  text-decoration:none;
+  color:#c4d5ff;
+  transition:.2s;
+}
+
+.links a:hover {
+  background:rgba(100,140,255,.15);
+}
+
+.tasks {
+  padding-left:20px;
+}
+
+.tasks li {
+  margin:12px 0;
+  color:#e2e6f5;
+  cursor:pointer;
   overflow-wrap:anywhere;
 }
-.card h2 {margin-top:0}
-a {color:#80b4ff}
-li {margin:10px 0}
-#pi {line-height:1.7;word-break:break-all}
+
+.tasks li:hover {
+  color:#ff9292;
+  text-decoration:line-through;
+}
+
+#pi {
+  overflow-wrap:anywhere;
+  line-height:1.8;
+  color:#b8caff;
+  font-family:monospace;
+  font-size:14px;
+  max-height:180px;
+  overflow-y:auto;
+}
+
+.input-row {
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
+
 footer {
+  border-top:1px solid var(--border);
+  padding:30px 15px;
   text-align:center;
-  padding:30px;
-  color:#8998ae;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:65px;
+}
+
+@media(max-width:650px) {
+  header {padding:18px 5%}
+  main {margin:35px auto}
+  .grid {grid-template-columns:1fr}
+  .header-tag {display:none}
+  .search {gap:7px}
+  .search button {padding:12px}
+  .card {padding:19px}
 }
 </style>
 </head>
+
 <body>
 
 <header>
-  <h1>🌐 NettiHubi</h1>
-  <p>Kaikki hyödyllinen yhdessä paikassa.</p>
+  <div class="logo">🌐 Netti<span>Hubi</span></div>
+  <div class="header-tag">Yksi sivu. Monta mahdollisuutta.</div>
 </header>
 
 <main>
-  <h2>🔎 Etsi internetistä</h2>
-  <form class="search" action="https://www.google.com/search">
-    <input name="q" placeholder="Mitä haluat etsiä?">
-    <button type="submit">Hae</button>
-  </form>
+
+  <section class="hero">
+    <h1>Tervetuloa <span>NettiHubiin.</span></h1>
+    <p>Hyödyllisiä työkaluja, mielenkiintoisia faktoja ja kaikkea muuta yhdessä paikassa.</p>
+
+    <form class="search" action="https://www.google.com/search" method="GET">
+      <input name="q" placeholder="Mitä etsit tänään?" required>
+      <button type="submit">Hae ↗</button>
+    </form>
+  </section>
+
+  <h2 class="section-title">✨ Tutustu työkaluihin</h2>
 
   <div class="grid">
 
     <section class="card">
-      <h2>🚀 Pikalinkit</h2>
-      <ul>
-        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
-        <li><a href="https://www.google.com" target="_blank">Google</a></li>
-        <li><a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
-        <li><a href="https://www.roblox.com" target="_blank">Roblox</a></li>
-        <li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2>📝 Muistilista</h2>
-      <input id="task" placeholder="Kirjoita muistettava asia">
-      <button onclick="addTask()">Lisää</button>
-      <ul id="tasks"></ul>
+      <h2>🧠 Päivän fakta</h2>
+      <p class="fact" id="fact"></p>
+      <p class="small" id="factDate"></p>
     </section>
 
     <section class="card">
       <h2>🧮 Laskin</h2>
-      <input id="calc" placeholder="Esim. 25*4">
-      <button onclick="calculate()">Laske</button>
+      <input id="calc" placeholder="Esim. 125 * 8 + 50">
+      <br><br>
+      <button onclick="calculate()">Laske tulos</button>
       <p id="answer">Vastaus ilmestyy tähän.</p>
     </section>
 
     <section class="card">
-      <h2>🧠 Päivän fakta</h2>
-      <p id="fact"></p>
-      <small>Uusi fakta vaihtuu seuraavana päivänä.</small>
+      <h2>🔢 Piin desimaalit</h2>
+      <p class="small">Valitse, kuinka monta desimaalia haluat nähdä.</p>
+      <input id="digits" type="number" min="1" max="1000" value="100">
+      <br><br>
+      <button onclick="showPi()">Näytä π</button>
+      <p id="pi"></p>
+      <button onclick="copyPi()">Kopioi desimaalit</button>
     </section>
 
     <section class="card">
-      <h2>🔢 Piin desimaalit</h2>
-      <label for="digits">Desimaalien määrä:</label>
-      <input id="digits" type="number" min="1" max="1000" value="50">
-      <button onclick="showPi()">Näytä π</button>
-      <p id="pi"></p>
-      <button onclick="copyPi()">Kopioi π</button>
+      <h2>📝 Muistilista</h2>
+      <div class="input-row">
+        <input id="task" placeholder="Kirjoita tehtävä...">
+        <button onclick="addTask()">+</button>
+      </div>
+      <ul class="tasks" id="tasks"></ul>
+      <p class="small">Klikkaa tehtävää poistaaksesi sen.</p>
+    </section>
+
+    <section class="card">
+      <h2>🚀 Pikalinkit</h2>
+      <div class="links">
+        <a href="https://www.youtube.com" target="_blank" rel="noopener">▶ YouTube</a>
+        <a href="https://www.google.com" target="_blank" rel="noopener">🔎 Google</a>
+        <a href="https://www.wikipedia.org" target="_blank" rel="noopener">📚 Wikipedia</a>
+        <a href="https://www.roblox.com" target="_blank" rel="noopener">🎮 Roblox</a>
+        <a href="https://chatgpt.com" target="_blank" rel="noopener">🤖 ChatGPT</a>
+        <a href="https://github.com" target="_blank" rel="noopener">💻 GitHub</a>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>💡 Tietoa NettiHubista</h2>
+      <p>NettiHubi kokoaa hyödyllisiä verkkotyökaluja yhteen paikkaan. Sivustoa kehitetään jatkuvasti uusilla ominaisuuksilla.</p>
+      <p class="small">NettiHubi © 2026</p>
     </section>
 
   </div>
 </main>
 
-<footer>NettiHubi © 2026</footer>
+<footer>
+  🌐 NettiHubi © 2026 · Kaikki yhdessä paikassa.
+</footer>
 
 <script>
-function addTask() {
-  const input = document.getElementById("task");
-  if (!input.value.trim()) return;
-  const li = document.createElement("li");
-  li.textContent = input.value;
-  li.title = "Klikkaa poistaaksesi";
-  li.onclick = () => li.remove();
-  document.getElementById("tasks").appendChild(li);
-  input.value = "";
-}
 
-function calculate() {
-  const expression = document.getElementById("calc").value;
-  const answer = document.getElementById("answer");
-  if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
-    answer.textContent = "Virheellinen laskutoimitus!";
-    return;
-  }
-  try {
-    const result = Function('"use strict";return (' + expression + ')')();
-    answer.textContent = Number.isFinite(result)
-      ? "Vastaus: " + result
-      : "Virheellinen laskutoimitus!";
-  } catch {
-    answer.textContent = "Tarkista laskutoimitus!";
-  }
-}
+// PÄIVÄN FAKTAT
 
-// Päivän fakta
-const facts = [
- 
 const facts = [
 "Mustekalalla on kolme sydäntä.",
 "Jääkarhun iho on musta.",
@@ -165,86 +342,189 @@ const facts = [
 "Banaani on kasvitieteellisesti marja.",
 "Mansikka ei ole kasvitieteellisesti varsinainen marja.",
 "Kirahvilla on seitsemän kaulanikamaa.",
-"Etanat voivat nukkua pitkiäkin aikoja.",
 "Valon nopeus tyhjiössä on noin 300 000 km/s.",
-"Kuun valo on todellisuudessa Auringosta heijastunutta valoa.",
+"Jupiter on aurinkokunnan suurin planeetta.",
 "Saturnuksen tiheys on pienempi kuin veden tiheys.",
 "Ihmisellä on yleensä 206 luuta aikuisena.",
 "Maapallo ei ole täydellinen pallo.",
 "Pingviinit ovat lintuja, mutta eivät osaa lentää.",
 "Sinivalas on suurin tunnettu eläin.",
-"Koralliriutat ovat eläinten muodostamia rakenteita.",
+"Koralliriutat muodostuvat pienistä eläimistä.",
 "Mustekalalla on sinertävää verta.",
-"Kilpikonnat ovat eläneet maapallolla jo dinosaurusten aikaan.",
-"Maailman syvin tunnettu merialue on Mariaanien hauta.",
+"Kilpikonnat ovat eläneet maapallolla dinosaurusten aikaan.",
+"Mariaanien hauta on maailman syvin tunnettu merialue.",
 "Vesi laajenee jäätyessään.",
 "Timantti koostuu hiilestä.",
 "Aurinko on tähti.",
 "Valtameret peittävät noin 71 prosenttia maapallon pinnasta.",
 "Maapallon magneettikenttä suojaa sitä aurinkotuulelta.",
 "Salama voi iskeä samaan paikkaan useita kertoja.",
-"Kirahvin kieli voi olla noin 45 cm pitkä.",
+"Kirahvin kieli voi olla noin 45 senttimetriä pitkä.",
 "Koaloilla on sormenjäljet.",
 "Perhoset maistavat jaloillaan.",
 "Flamingot saavat vaaleanpunaisen värinsä ravinnostaan.",
 "Krokotiilit eivät pysty työntämään kieltään ulos suustaan.",
-"Lehmä voi muodostaa läheisiä ystävyyssuhteita.",
-"Merisaukot voivat pitää toisiaan kädestä kiinni nukkuessaan.",
 "Maailman korkein vuori merenpinnasta mitattuna on Mount Everest.",
 "Egyptin pyramidit rakennettiin tuhansia vuosia sitten.",
 "Ensimmäinen ihminen käveli Kuussa vuonna 1969.",
-"Internetin kehitys alkoi vuosikymmeniä ennen älypuhelimia.",
 "Ensimmäinen sähköposti lähetettiin 1970-luvulla.",
 "Valaat hengittävät ilmaa keuhkoillaan.",
-"Maailmassa on yli 8 000 tunnettua sammakkolajia.",
-"Jupiter on aurinkokunnan suurin planeetta.",
+"Maailmassa on tuhansia sammakkolajeja.",
 "Marsissa on aurinkokunnan suurin tunnettu tulivuori.",
-"Ukkonen syntyy salaman kuumentaessa ilmaa nopeasti.",
 "Kasvit käyttävät yhteyttämisessä auringonvaloa.",
-"Jokaisella lumihiutaleella on oma rakenteensa.",
-"Maailman suurin nisäkäs on sinivalas.",
 "Strutsi on maailman suurin elossa oleva lintulaji.",
-"Ihmisen aivot käyttävät paljon energiaa.",
 "Maailman pisin joki on kiistanalainen aihe: Niili ja Amazon kilpailevat kärkipaikasta.",
-"Vesi voi esiintyä luonnossa kiinteänä, nesteenä ja kaasuna.",
 "Suomessa on satojatuhansia järviä.",
 "Suomen kansalliseläin on karhu.",
 "Suomen kansallislintu on laulujoutsen.",
 "Suomen kansalliskukka on kielo.",
-"Suomen itsenäisyysjulistus annettiin vuonna 1917.",
-"Ensimmäiset olympialaiset järjestettiin antiikin Kreikassa.",
+"Suomi itsenäistyi vuonna 1917.",
 "Pingistä kutsutaan myös pöytätennikseksi.",
 "Shakki on yli tuhat vuotta vanha peli.",
 "Pöllöt pystyvät kääntämään päätään pitkälle.",
-"Maailmankaikkeus laajenee."
+"Maailmankaikkeus laajenee.",
+"Kuu kiertää Maata.",
+"Maapallo kiertää Auringon noin 365 päivässä.",
+"Vesi voi esiintyä kiinteänä, nesteenä ja kaasuna.",
+"Jokaisella lumihiutaleella on oma rakenteensa.",
+"Strutsit eivät lennä.",
+"Mehiläiset ovat tärkeitä pölyttäjiä.",
+"Maailman suurin nisäkäs on sinivalas.",
+"Ihmisellä on viisi perusaistia perinteisen jaottelun mukaan.",
+"Valo kulkee tyhjiössä nopeammin kuin ääni ilmassa.",
+"Maapallon ilmakehä koostuu pääosin typestä.",
+"Jupiterilla on suuri punainen pilkku, joka on jättimäinen myrsky."
 ];
 
-const day = Math.floor(Date.now() / 86400000);
+const today = new Date();
+const dayNumber = Math.floor(Date.UTC(
+  today.getUTCFullYear(),
+  today.getUTCMonth(),
+  today.getUTCDate()
+) / 86400000);
+
 document.getElementById("fact").textContent =
-  facts[((day + 0) % facts.length)];
+  facts[dayNumber % facts.length];
+
+document.getElementById("factDate").textContent =
+  "Päivän fakta · " +
+  today.toLocaleDateString("fi-FI");
 
 
-// Piin desimaalit
+// LASKIN
+
+function calculate() {
+  const expression = document.getElementById("calc").value.trim();
+  const answer = document.getElementById("answer");
+
+  if (!expression || !/^[0-9+\-*/().\s]+$/.test(expression)) {
+    answer.textContent = "Tarkista laskutoimitus!";
+    return;
+  }
+
+  try {
+    const result = Function('"use strict";return (' + expression + ')')();
+
+    answer.textContent =
+      Number.isFinite(result)
+      ? "Vastaus: " + result
+      : "Virheellinen laskutoimitus!";
+  } catch {
+    answer.textContent = "Virheellinen laskutoimitus!";
+  }
+}
+
+
+// PIIN DESIMAALIT
+
 const piDigits =
-"3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951941511609433057270365759591953092186117381932611793105118548074462379962749567351885752724891227938183011949129833673362440656643086021394946395224737190702179860943702770539217176293176752384674818467669405132000568127145263560827785771342757789609173637178721468440901224953430146549585371050792279689258923542019956112129021960864034418159813629774771309960518707211349999998372978049951059731732816096318595024459455346908302642522308253344685035261931188171010003137838752886587533208381420617177669147303598253490428755468731159562863882353787593751957781857780532171226806613001927876611195909216420199";
+"3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679" +
+"8214808651328230664709384460955058223172535940812848111745028410270193852110555964462294895493038196" +
+"4428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273" +
+"7245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094" +
+"3305727036575959195309218611738193261179310511854807446237996274956735188575272489122793818301194912" +
+"9833673362440656643086021394946395224737190702179860943702770539217176293176752384674818467669405132" +
+"0005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235" +
+"4201995611212902196086403441815981362977477130996051870721134999999837297804995105973173281609631859" +
+"5024459455346908302642522308253344685035261931188171010003137838752886587533208381420617177669147303" +
+"59825394285755468731159562863882353787593751957781857780532171226806613001927686111959092164201989380952572";
 
 function showPi() {
   const count = Number(document.getElementById("digits").value);
+  const output = document.getElementById("pi");
+
   if (!Number.isInteger(count) || count < 1 || count > 1000) {
-    document.getElementById("pi").textContent =
-      "Valitse määrä väliltä 1–1000.";
+    output.textContent = "Valitse 1–1000 desimaalia.";
     return;
   }
-  document.getElementById("pi").textContent =
-    piDigits.slice(0, count + 2);
+
+  output.textContent = piDigits.slice(0, count + 2);
 }
 
 function copyPi() {
   const text = document.getElementById("pi").textContent;
-  if (text) navigator.clipboard.writeText(text);
+
+  if (!text || !text.startsWith("3.")) return;
+
+  navigator.clipboard.writeText(text)
+    .then(() => alert("Piin desimaalit kopioitu!"))
+    .catch(() => alert("Kopiointi ei onnistunut."));
 }
 
+
+// MUISTILISTA
+
+let savedTasks = [];
+
+try {
+  savedTasks = JSON.parse(localStorage.getItem("nettihubiTasks")) || [];
+  if (!Array.isArray(savedTasks)) savedTasks = [];
+} catch {
+  savedTasks = [];
+}
+
+function saveTasks() {
+  localStorage.setItem("nettihubiTasks", JSON.stringify(savedTasks));
+}
+
+function renderTasks() {
+  const list = document.getElementById("tasks");
+  list.innerHTML = "";
+
+  savedTasks.forEach((task, index) => {
+    const li = document.createElement("li");
+    li.textContent = task;
+
+    li.onclick = () => {
+      savedTasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    };
+
+    list.appendChild(li);
+  });
+}
+
+function addTask() {
+  const input = document.getElementById("task");
+  const value = input.value.trim();
+
+  if (!value) return;
+
+  savedTasks.push(value);
+  saveTasks();
+  renderTasks();
+
+  input.value = "";
+}
+
+document.getElementById("task").addEventListener("keydown", e => {
+  if (e.key === "Enter") addTask();
+});
+
 showPi();
+renderTasks();
+
 </script>
 
 </body>
