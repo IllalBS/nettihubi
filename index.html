@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NettiHubi</title>
+<style>
+* {box-sizing:border-box}
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#101827;
+  color:white;
+}
+header {
+  padding:25px;
+  text-align:center;
+  background:#192943;
+}
+header h1 {font-size:36px;margin:0}
+header p {color:#b8c6dc}
+main {
+  max-width:950px;
+  margin:35px auto;
+  padding:15px;
+}
+.search {display:flex;gap:10px}
+input,button {
+  padding:13px;
+  border:0;
+  border-radius:9px;
+  font-size:16px;
+}
+input {flex:1;min-width:0}
+button {
+  background:#3978ed;
+  color:white;
+  cursor:pointer;
+}
+button:hover {background:#245ac0}
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:25px;
+}
+.card {
+  background:#1c2b43;
+  padding:22px;
+  border-radius:15px;
+  overflow-wrap:anywhere;
+}
+.card h2 {margin-top:0}
+a {color:#80b4ff}
+li {margin:10px 0}
+#pi {line-height:1.7;word-break:break-all}
+footer {
+  text-align:center;
+  padding:30px;
+  color:#8998ae;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌐 NettiHubi</h1>
+  <p>Kaikki hyödyllinen yhdessä paikassa.</p>
+</header>
+
+<main>
+  <h2>🔎 Etsi internetistä</h2>
+  <form class="search" action="https://www.google.com/search">
+    <input name="q" placeholder="Mitä haluat etsiä?">
+    <button type="submit">Hae</button>
+  </form>
+
+  <div class="grid">
+
+    <section class="card">
+      <h2>🚀 Pikalinkit</h2>
+      <ul>
+        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+        <li><a href="https://www.google.com" target="_blank">Google</a></li>
+        <li><a href="https://www.wikipedia.org" target="_blank">Wikipedia</a></li>
+        <li><a href="https://www.roblox.com" target="_blank">Roblox</a></li>
+        <li><a href="https://chatgpt.com" target="_blank">ChatGPT</a></li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>📝 Muistilista</h2>
+      <input id="task" placeholder="Kirjoita muistettava asia">
+      <button onclick="addTask()">Lisää</button>
+      <ul id="tasks"></ul>
+    </section>
+
+    <section class="card">
+      <h2>🧮 Laskin</h2>
+      <input id="calc" placeholder="Esim. 25*4">
+      <button onclick="calculate()">Laske</button>
+      <p id="answer">Vastaus ilmestyy tähän.</p>
+    </section>
+
+    <section class="card">
+      <h2>🧠 Päivän fakta</h2>
+      <p id="fact"></p>
+      <small>Uusi fakta vaihtuu seuraavana päivänä.</small>
+    </section>
+
+    <section class="card">
+      <h2>🔢 Piin desimaalit</h2>
+      <label for="digits">Desimaalien määrä:</label>
+      <input id="digits" type="number" min="1" max="1000" value="50">
+      <button onclick="showPi()">Näytä π</button>
+      <p id="pi"></p>
+      <button onclick="copyPi()">Kopioi π</button>
+    </section>
+
+  </div>
+</main>
+
+<footer>NettiHubi © 2026</footer>
+
+<script>
+function addTask() {
+  const input = document.getElementById("task");
+  if (!input.value.trim()) return;
+  const li = document.createElement("li");
+  li.textContent = input.value;
+  li.title = "Klikkaa poistaaksesi";
+  li.onclick = () => li.remove();
+  document.getElementById("tasks").appendChild(li);
+  input.value = "";
+}
+
+function calculate() {
+  const expression = document.getElementById("calc").value;
+  const answer = document.getElementById("answer");
+  if (!/^[0-9+\-*/().\s]+$/.test(expression)) {
+    answer.textContent = "Virheellinen laskutoimitus!";
+    return;
+  }
+  try {
+    const result = Function('"use strict";return (' + expression + ')')();
+    answer.textContent = Number.isFinite(result)
+      ? "Vastaus: " + result
+      : "Virheellinen laskutoimitus!";
+  } catch {
+    answer.textContent = "Tarkista laskutoimitus!";
+  }
+}
+
+// Päivän fakta
+const facts = [
+ 
+const facts = [
+"Mustekalalla on kolme sydäntä.",
+"Jääkarhun iho on musta.",
+"Maailman suurin aavikko on Antarktis.",
+"Venus pyörii akselinsa ympäri hitaammin kuin se kiertää Auringon.",
+"Mehiläiset pystyvät tunnistamaan ihmiskasvoja.",
+"Salaman lämpötila voi ylittää Auringon pintalämpötilan.",
+"Banaani on kasvitieteellisesti marja.",
+"Mansikka ei ole kasvitieteellisesti varsinainen marja.",
+"Kirahvilla on seitsemän kaulanikamaa.",
+"Etanat voivat nukkua pitkiäkin aikoja.",
+"Valon nopeus tyhjiössä on noin 300 000 km/s.",
+"Kuun valo on todellisuudessa Auringosta heijastunutta valoa.",
+"Saturnuksen tiheys on pienempi kuin veden tiheys.",
+"Ihmisellä on yleensä 206 luuta aikuisena.",
+"Maapallo ei ole täydellinen pallo.",
+"Pingviinit ovat lintuja, mutta eivät osaa lentää.",
+"Sinivalas on suurin tunnettu eläin.",
+"Koralliriutat ovat eläinten muodostamia rakenteita.",
+"Mustekalalla on sinertävää verta.",
+"Kilpikonnat ovat eläneet maapallolla jo dinosaurusten aikaan.",
+"Maailman syvin tunnettu merialue on Mariaanien hauta.",
+"Vesi laajenee jäätyessään.",
+"Timantti koostuu hiilestä.",
+"Aurinko on tähti.",
+"Valtameret peittävät noin 71 prosenttia maapallon pinnasta.",
+"Maapallon magneettikenttä suojaa sitä aurinkotuulelta.",
+"Salama voi iskeä samaan paikkaan useita kertoja.",
+"Kirahvin kieli voi olla noin 45 cm pitkä.",
+"Koaloilla on sormenjäljet.",
+"Perhoset maistavat jaloillaan.",
+"Flamingot saavat vaaleanpunaisen värinsä ravinnostaan.",
+"Krokotiilit eivät pysty työntämään kieltään ulos suustaan.",
+"Lehmä voi muodostaa läheisiä ystävyyssuhteita.",
+"Merisaukot voivat pitää toisiaan kädestä kiinni nukkuessaan.",
+"Maailman korkein vuori merenpinnasta mitattuna on Mount Everest.",
+"Egyptin pyramidit rakennettiin tuhansia vuosia sitten.",
+"Ensimmäinen ihminen käveli Kuussa vuonna 1969.",
+"Internetin kehitys alkoi vuosikymmeniä ennen älypuhelimia.",
+"Ensimmäinen sähköposti lähetettiin 1970-luvulla.",
+"Valaat hengittävät ilmaa keuhkoillaan.",
+"Maailmassa on yli 8 000 tunnettua sammakkolajia.",
+"Jupiter on aurinkokunnan suurin planeetta.",
+"Marsissa on aurinkokunnan suurin tunnettu tulivuori.",
+"Ukkonen syntyy salaman kuumentaessa ilmaa nopeasti.",
+"Kasvit käyttävät yhteyttämisessä auringonvaloa.",
+"Jokaisella lumihiutaleella on oma rakenteensa.",
+"Maailman suurin nisäkäs on sinivalas.",
+"Strutsi on maailman suurin elossa oleva lintulaji.",
+"Ihmisen aivot käyttävät paljon energiaa.",
+"Maailman pisin joki on kiistanalainen aihe: Niili ja Amazon kilpailevat kärkipaikasta.",
+"Vesi voi esiintyä luonnossa kiinteänä, nesteenä ja kaasuna.",
+"Suomessa on satojatuhansia järviä.",
+"Suomen kansalliseläin on karhu.",
+"Suomen kansallislintu on laulujoutsen.",
+"Suomen kansalliskukka on kielo.",
+"Suomen itsenäisyysjulistus annettiin vuonna 1917.",
+"Ensimmäiset olympialaiset järjestettiin antiikin Kreikassa.",
+"Pingistä kutsutaan myös pöytätennikseksi.",
+"Shakki on yli tuhat vuotta vanha peli.",
+"Pöllöt pystyvät kääntämään päätään pitkälle.",
+"Maailmankaikkeus laajenee."
+];
+
+const day = Math.floor(Date.now() / 86400000);
+document.getElementById("fact").textContent =
+  facts[((day + 0) % facts.length)];
+
+
+// Piin desimaalit
+const piDigits =
+"3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951941511609433057270365759591953092186117381932611793105118548074462379962749567351885752724891227938183011949129833673362440656643086021394946395224737190702179860943702770539217176293176752384674818467669405132000568127145263560827785771342757789609173637178721468440901224953430146549585371050792279689258923542019956112129021960864034418159813629774771309960518707211349999998372978049951059731732816096318595024459455346908302642522308253344685035261931188171010003137838752886587533208381420617177669147303598253490428755468731159562863882353787593751957781857780532171226806613001927876611195909216420199";
+
+function showPi() {
+  const count = Number(document.getElementById("digits").value);
+  if (!Number.isInteger(count) || count < 1 || count > 1000) {
+    document.getElementById("pi").textContent =
+      "Valitse määrä väliltä 1–1000.";
+    return;
+  }
+  document.getElementById("pi").textContent =
+    piDigits.slice(0, count + 2);
+}
+
+function copyPi() {
+  const text = document.getElementById("pi").textContent;
+  if (text) navigator.clipboard.writeText(text);
+}
+
+showPi();
+</script>
+
+</body>
+</html>
