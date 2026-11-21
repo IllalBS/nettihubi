@@ -380,6 +380,97 @@ footer {
   </button>
 </section>
 
+<!-- TEKSTILASKURI -->
+<section class="card">
+  <h2>🔤 Tekstilaskuri</h2>
+  <textarea id="textCounterInput" rows="5" placeholder="Kirjoita tai liitä tekstiä tähän..." style="width:100%;background:#111a2d;color:white;border:1px solid var(--border);border-radius:10px;padding:12px;font:inherit;resize:vertical"></textarea>
+  <p id="textStats">0 sanaa · 0 merkkiä · 0 lausetta</p>
+  <p class="small" id="textNoSpaces">Merkkejä ilman välilyöntejä: 0</p>
+  <button onclick="clearTextCounter()">Tyhjennä</button>
+</section>
+
+<!-- YKSIKKÖMUUNNIN -->
+<section class="card">
+  <h2>🔄 Yksikkömuunnin</h2>
+  <input id="unitValue" type="number" value="1" placeholder="Muunnettava määrä">
+  <div class="input-row" style="margin-top:12px">
+    <select id="unitFrom" style="width:100%;padding:12px;background:#111a2d;color:white;border:1px solid var(--border);border-radius:10px">
+      <option value="km">Kilometri (km)</option>
+      <option value="m">Metri (m)</option>
+      <option value="cm">Senttimetri (cm)</option>
+      <option value="mm">Millimetri (mm)</option>
+      <option value="kg">Kilogramma (kg)</option>
+      <option value="g">Gramma (g)</option>
+      <option value="mg">Milligramma (mg)</option>
+      <option value="l">Litra (l)</option>
+      <option value="dl">Desilitra (dl)</option>
+      <option value="ml">Millilitra (ml)</option>
+      <option value="c">Celsius (°C)</option>
+      <option value="f">Fahrenheit (°F)</option>
+    </select>
+    <select id="unitTo" style="width:100%;padding:12px;background:#111a2d;color:white;border:1px solid var(--border);border-radius:10px">
+      <option value="m">Metri (m)</option>
+      <option value="km">Kilometri (km)</option>
+      <option value="cm">Senttimetri (cm)</option>
+      <option value="mm">Millimetri (mm)</option>
+      <option value="g">Gramma (g)</option>
+      <option value="kg">Kilogramma (kg)</option>
+      <option value="mg">Milligramma (mg)</option>
+      <option value="dl">Desilitra (dl)</option>
+      <option value="l">Litra (l)</option>
+      <option value="ml">Millilitra (ml)</option>
+      <option value="f">Fahrenheit (°F)</option>
+      <option value="c">Celsius (°C)</option>
+    </select>
+  </div>
+  <button onclick="convertUnit()">Muunna</button>
+  <p id="unitResult">Tulos näkyy tässä.</p>
+</section>
+
+<!-- PÄÄTÖSPYÖRÄ -->
+<section class="card">
+  <h2>🎡 Päätöspyörä</h2>
+  <p class="small">Kirjoita vaihtoehdot, yksi per rivi.</p>
+  <textarea id="wheelOptions" rows="5" placeholder="Esim.&#10;Pizza&#10;Hampurilainen&#10;Pasta" style="width:100%;background:#111a2d;color:white;border:1px solid var(--border);border-radius:10px;padding:12px;font:inherit;resize:vertical"></textarea>
+  <div style="text-align:center;padding:15px">
+    <div id="wheelVisual" style="font-size:65px;display:inline-block">🎡</div>
+    <p id="wheelResult" style="font-size:21px;font-weight:bold">Mitä valitaan?</p>
+  </div>
+  <button id="wheelButton" onclick="spinWheel()" style="width:100%">Pyöräytä!</button>
+</section>
+
+<!-- LÄHTÖLASKURI -->
+<section class="card">
+  <h2>📅 Lähtölaskuri</h2>
+  <p class="small">Valitse päivämäärä, jota odotat.</p>
+  <input type="date" id="countdownDate">
+  <input type="text" id="countdownName" placeholder="Esim. Joulu" style="margin-top:10px">
+  <button onclick="startCountdown()" style="margin-top:12px">Laske päivät</button>
+  <p id="countdownResult" style="font-size:23px;font-weight:bold">Valitse päivämäärä!</p>
+</section>
+
+<!-- VÄRITYÖKALU -->
+<section class="card">
+  <h2>🎨 Värityökalu</h2>
+  <p class="small">Valitse haluamasi väri.</p>
+  <input type="color" id="colorPicker" value="#648cff" style="height:75px;cursor:pointer;padding:5px">
+  <div id="colorPreview" style="height:70px;border-radius:12px;margin:12px 0;background:#648cff"></div>
+  <p id="colorCode" style="font-size:23px;font-weight:bold">#648CFF</p>
+  <button onclick="copyColor()">Kopioi HEX-koodi</button>
+</section>
+
+<!-- SALASANAN TARKISTIN -->
+<section class="card">
+  <h2>🔐 Salasanan vahvuuden tarkistin</h2>
+  <p class="small">Tarkistus tapahtuu vain omassa selaimessasi. Salasanaa ei tallenneta eikä lähetetä mihinkään.</p>
+  <input type="password" id="passwordCheck" placeholder="Kirjoita testattava salasana">
+  <p id="passwordStrength" style="font-size:20px;font-weight:bold">Odottamassa salasanaa</p>
+  <div style="height:9px;background:#303a53;border-radius:10px;overflow:hidden">
+    <div id="passwordBar" style="height:100%;width:0%;background:#648cff;transition:.2s"></div>
+  </div>
+  <p id="passwordAdvice" class="small">Saat arvion salasanan vahvuudesta.</p>
+</section>
+
   </div>
 </main>
 
@@ -767,6 +858,247 @@ function resetScores() {
 }
 
 updateScores();
+
+// ===================================
+// TEKSTILASKURI
+// ===================================
+
+const textCounterInput = document.getElementById("textCounterInput");
+
+textCounterInput.addEventListener("input", updateTextCounter);
+
+function updateTextCounter() {
+  const text = textCounterInput.value;
+  const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+  const sentences = text.trim()
+    ? (text.match(/[.!?]+(?=\s|$)/g) || []).length
+    : 0;
+
+  document.getElementById("textStats").textContent =
+    words + " sanaa · " + text.length + " merkkiä · " +
+    sentences + " lausetta";
+
+  document.getElementById("textNoSpaces").textContent =
+    "Merkkejä ilman välilyöntejä: " +
+    text.replace(/\s/g, "").length;
+}
+
+function clearTextCounter() {
+  textCounterInput.value = "";
+  updateTextCounter();
+}
+
+
+// ===================================
+// YKSIKKÖMUUNNIN
+// ===================================
+
+const unitFactors = {
+  km: {group:"length", factor:1000},
+  m:  {group:"length", factor:1},
+  cm: {group:"length", factor:0.01},
+  mm: {group:"length", factor:0.001},
+
+  kg: {group:"weight", factor:1000},
+  g:  {group:"weight", factor:1},
+  mg: {group:"weight", factor:0.001},
+
+  l:  {group:"volume", factor:1000},
+  dl: {group:"volume", factor:100},
+  ml: {group:"volume", factor:1}
+};
+
+function convertUnit() {
+  const value = Number(document.getElementById("unitValue").value);
+  const from = document.getElementById("unitFrom").value;
+  const to = document.getElementById("unitTo").value;
+  const output = document.getElementById("unitResult");
+
+  if (!Number.isFinite(value) ||
+      document.getElementById("unitValue").value.trim() === "") {
+    output.textContent = "Anna kelvollinen luku!";
+    return;
+  }
+
+  let result;
+
+  if (from === "c" && to === "f") {
+    result = value * 9/5 + 32;
+  } else if (from === "f" && to === "c") {
+    result = (value - 32) * 5/9;
+  } else if (unitFactors[from] && unitFactors[to] &&
+      unitFactors[from].group === unitFactors[to].group) {
+    result = value * unitFactors[from].factor /
+      unitFactors[to].factor;
+  } else {
+    output.textContent = "Näitä yksiköitä ei voi muuntaa keskenään.";
+    return;
+  }
+
+  output.textContent = "Tulos: " +
+    Number(result.toPrecision(10)).toLocaleString("fi-FI") +
+    " " + to;
+}
+
+
+// ===================================
+// PÄÄTÖSPYÖRÄ
+// ===================================
+
+let wheelBusy = false;
+
+function spinWheel() {
+  if (wheelBusy) return;
+
+  const options = document.getElementById("wheelOptions")
+    .value.split(/\n/)
+    .map(x => x.trim())
+    .filter(Boolean);
+
+  const result = document.getElementById("wheelResult");
+  const visual = document.getElementById("wheelVisual");
+  const button = document.getElementById("wheelButton");
+
+  if (options.length < 2) {
+    result.textContent = "Lisää vähintään kaksi vaihtoehtoa!";
+    return;
+  }
+
+  if (options.length > 100) {
+    result.textContent = "Enintään 100 vaihtoehtoa!";
+    return;
+  }
+
+  wheelBusy = true;
+  button.disabled = true;
+  button.textContent = "Pyörii...";
+
+  visual.style.transition = "transform 2s ease-out";
+  visual.style.transform = "rotate(1440deg)";
+
+  const chosen = options[Math.floor(Math.random() * options.length)];
+
+  setTimeout(() => {
+    result.textContent = "🎉 Valinta: " + chosen;
+    visual.style.transition = "none";
+    visual.style.transform = "rotate(0deg)";
+    button.disabled = false;
+    button.textContent = "Pyöräytä uudelleen!";
+    wheelBusy = false;
+  }, 2000);
+}
+
+
+// ===================================
+// LÄHTÖLASKURI
+// ===================================
+
+function startCountdown() {
+  const dateValue = document.getElementById("countdownDate").value;
+  const name = document.getElementById("countdownName").value.trim();
+  const output = document.getElementById("countdownResult");
+
+  if (!dateValue) {
+    output.textContent = "Valitse ensin päivämäärä!";
+    return;
+  }
+
+  const selected = new Date(dateValue + "T00:00:00");
+
+  if (isNaN(selected.getTime())) {
+    output.textContent = "Virheellinen päivämäärä!";
+    return;
+  }
+
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  const difference = Math.round(
+    (selected.getTime() - today.getTime()) / 86400000
+  );
+
+  const eventName = name || "Tapahtumaan";
+
+  if (difference > 0) {
+    output.textContent = eventName + " on " + difference + " päivän päästä! 🎉";
+  } else if (difference === 0) {
+    output.textContent = "🎉 Tänään on " + eventName + "!";
+  } else {
+    output.textContent = eventName + " oli " +
+      Math.abs(difference) + " päivää sitten.";
+  }
+}
+
+
+// ===================================
+// VÄRITYÖKALU
+// ===================================
+
+const colorPicker = document.getElementById("colorPicker");
+
+function updateColor() {
+  const color = colorPicker.value.toUpperCase();
+
+  document.getElementById("colorPreview").style.background = color;
+  document.getElementById("colorCode").textContent = color;
+}
+
+colorPicker.addEventListener("input", updateColor);
+
+function copyColor() {
+  navigator.clipboard.writeText(colorPicker.value.toUpperCase())
+    .then(() => alert("Värikoodi kopioitu!"))
+    .catch(() => alert("Kopiointi ei onnistunut."));
+}
+
+updateColor();
+
+
+// ===================================
+// SALASANAN VAHVUUDEN TARKISTIN
+// ===================================
+
+const passwordInput = document.getElementById("passwordCheck");
+
+passwordInput.addEventListener("input", checkPassword);
+
+function checkPassword() {
+  const password = passwordInput.value;
+  const strength = document.getElementById("passwordStrength");
+  const bar = document.getElementById("passwordBar");
+  const advice = document.getElementById("passwordAdvice");
+
+  if (!password) {
+    strength.textContent = "Odottamassa salasanaa";
+    bar.style.width = "0%";
+    advice.textContent = "Saat arvion salasanan vahvuudesta.";
+    return;
+  }
+
+  let points = 0;
+
+  if (password.length >= 8) points++;
+  if (password.length >= 12) points++;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) points++;
+  if (/[0-9]/.test(password)) points++;
+  if (/[^a-zA-Z0-9]/.test(password)) points++;
+
+  const levels = [
+    {name:"Hyvin heikko", width:"10%", advice:"Kokeile pidempää ja monipuolisempaa salasanaa."},
+    {name:"Heikko", width:"25%", advice:"Lisää pituutta ja erilaisia merkkejä."},
+    {name:"Kohtalainen", width:"45%", advice:"Lisää pituutta ja vaihtelevia merkkejä."},
+    {name:"Melko hyvä", width:"65%", advice:"Hyvä alku! Pituuden lisääminen auttaa."},
+    {name:"Vahva", width:"85%", advice:"Hyvä! Käytä silti jokaisella sivustolla eri salasanaa."},
+    {name:"Erittäin vahva", width:"100%", advice:"Hyvä tulos! Käytä salasanaa vain yhdessä palvelussa."}
+  ];
+
+  const level = levels[points];
+
+  strength.textContent = level.name;
+  bar.style.width = level.width;
+  advice.textContent = level.advice;
+}
+
 
 </script>
 
