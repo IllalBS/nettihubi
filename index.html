@@ -321,6 +321,65 @@ footer {
       <p class="small">NettiHubi © 2026</p>
     </section>
 
+<section class="card">
+  <h2>⏱️ Ajastin</h2>
+  <p class="small">Aseta aika sekunteina.</p>
+  <input id="timerInput" type="number" min="1" max="86400" value="60">
+  <p id="timerDisplay" style="font-size:32px;font-weight:bold">01:00</p>
+  <div class="input-row">
+    <button onclick="startTimer()">Käynnistä</button>
+    <button onclick="pauseTimer()">Tauko</button>
+    <button onclick="resetTimer()">Nollaa</button>
+  </div>
+  <p class="small" id="timerStatus">Valmis aloittamaan.</p>
+</section>
+
+<section class="card">
+  <h2>⏱️ Sekuntikello</h2>
+  <p id="stopwatchDisplay" style="font-size:32px;font-weight:bold">00:00.0</p>
+  <div class="input-row">
+    <button onclick="startStopwatch()">Käynnistä</button>
+    <button onclick="pauseStopwatch()">Pysäytä</button>
+    <button onclick="resetStopwatch()">Nollaa</button>
+  </div>
+</section>
+
+<section class="card">
+  <h2>🎲 Satunnaislukugeneraattori</h2>
+  <p class="small">Valitse pienin ja suurin luku.</p>
+  <div class="input-row">
+    <input id="randomMin" type="number" value="1" placeholder="Minimi">
+    <input id="randomMax" type="number" value="100" placeholder="Maksimi">
+  </div>
+  <button onclick="generateRandom()">Arvo numero!</button>
+  <p id="randomResult" style="font-size:32px;font-weight:bold">?</p>
+</section>
+
+<section class="card">
+  <h2>🏆 Pistelaskuri</h2>
+  <p class="small">Laske kahden pelaajan pisteitä.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;text-align:center">
+    <div>
+      <input id="player1Name" value="Pelaaja 1" aria-label="Pelaajan 1 nimi">
+      <p id="score1" style="font-size:48px;font-weight:bold;margin:15px 0">0</p>
+      <button onclick="changeScore(1,1)">+1 piste</button>
+      <button onclick="changeScore(1,-1)" style="margin-top:8px;background:#48536b">−1</button>
+    </div>
+
+    <div>
+      <input id="player2Name" value="Pelaaja 2" aria-label="Pelaajan 2 nimi">
+      <p id="score2" style="font-size:48px;font-weight:bold;margin:15px 0">0</p>
+      <button onclick="changeScore(2,1)">+1 piste</button>
+      <button onclick="changeScore(2,-1)" style="margin-top:8px;background:#48536b">−1</button>
+    </div>
+  </div>
+
+  <button onclick="resetScores()" style="width:100%;margin-top:20px">
+    Nollaa pisteet
+  </button>
+</section>
+
   </div>
 </main>
 
@@ -524,6 +583,190 @@ document.getElementById("task").addEventListener("keydown", e => {
 
 showPi();
 renderTasks();
+
+// AJASTIN
+
+let timerInterval = null;
+let timerRemaining = 60;
+let timerEnd = 0;
+let timerHasStarted = false;
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return String(m).padStart(2,"0") + ":" +
+         String(s).padStart(2,"0");
+}
+
+function startTimer() {
+  if (timerInterval !== null) return;
+
+  if (!timerHasStarted || timerRemaining <= 0) {
+    const value = Number(document.getElementById("timerInput").value);
+
+    if (!Number.isInteger(value) || value < 1 || value > 86400) {
+      document.getElementById("timerStatus").textContent =
+        "Valitse 1–86400 sekuntia.";
+      return;
+    }
+
+    timerRemaining = value;
+    timerHasStarted = true;
+  }
+
+  timerEnd = Date.now() + timerRemaining * 1000;
+
+  timerInterval = setInterval(() => {
+    timerRemaining = Math.max(0, Math.ceil((timerEnd-Date.now())/1000));
+
+    document.getElementById("timerDisplay").textContent =
+      formatTime(timerRemaining);
+
+    if (timerRemaining <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerHasStarted = false;
+      document.getElementById("timerStatus").textContent =
+        "⏰ Aika loppui!";
+    }
+  }, 100);
+
+  document.getElementById("timerStatus").textContent =
+    "Ajastin käynnissä!";
+}
+
+function pauseTimer() {
+  if (timerInterval === null) return;
+
+  timerRemaining = Math.max(0,Math.ceil((timerEnd-Date.now())/1000));
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  document.getElementById("timerDisplay").textContent =
+    formatTime(timerRemaining);
+  document.getElementById("timerStatus").textContent =
+    "Ajastin pysäytetty.";
+}
+
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerHasStarted = false;
+
+  const value = Number(document.getElementById("timerInput").value);
+  timerRemaining = Number.isInteger(value) && value >= 1 && value <= 86400
+    ? value : 60;
+
+  document.getElementById("timerDisplay").textContent =
+    formatTime(timerRemaining);
+  document.getElementById("timerStatus").textContent =
+    "Ajastin nollattu.";
+}
+
+
+// SEKUNTIKELLO
+
+let stopwatchInterval = null;
+let stopwatchElapsed = 0;
+let stopwatchStart = 0;
+
+function updateStopwatch() {
+  const seconds = Math.floor(stopwatchElapsed/1000);
+  const minutes = Math.floor(seconds/60);
+  const remainder = seconds%60;
+  const tenths = Math.floor((stopwatchElapsed%1000)/100);
+
+  document.getElementById("stopwatchDisplay").textContent =
+    String(minutes).padStart(2,"0") + ":" +
+    String(remainder).padStart(2,"0") + "." + tenths;
+}
+
+function startStopwatch() {
+  if (stopwatchInterval !== null) return;
+
+  stopwatchStart = Date.now()-stopwatchElapsed;
+
+  stopwatchInterval = setInterval(() => {
+    stopwatchElapsed = Date.now()-stopwatchStart;
+    updateStopwatch();
+  },50);
+}
+
+function pauseStopwatch() {
+  if (stopwatchInterval === null) return;
+
+  clearInterval(stopwatchInterval);
+  stopwatchInterval = null;
+  stopwatchElapsed = Date.now()-stopwatchStart;
+  updateStopwatch();
+}
+
+function resetStopwatch() {
+  clearInterval(stopwatchInterval);
+  stopwatchInterval = null;
+  stopwatchElapsed = 0;
+  updateStopwatch();
+}
+
+
+// SATUNNAISLUKUGENERAATTORI
+
+function generateRandom() {
+  const min = Number(document.getElementById("randomMin").value);
+  const max = Number(document.getElementById("randomMax").value);
+  const result = document.getElementById("randomResult");
+
+  if (
+    !Number.isSafeInteger(min) ||
+    !Number.isSafeInteger(max) ||
+    min > max ||
+    !Number.isSafeInteger(max-min+1)
+  ) {
+    result.textContent = "Tarkista lukuväli!";
+    return;
+  }
+
+  const random = Math.floor(Math.random()*(max-min+1))+min;
+  result.textContent = random;
+}
+
+
+// PISTELASKURI
+
+let scores = [0,0];
+
+try {
+  const saved = JSON.parse(localStorage.getItem("nettihubiScores"));
+  if (
+    Array.isArray(saved) &&
+    saved.length === 2 &&
+    saved.every(n => Number.isSafeInteger(n) && n >= 0)
+  ) {
+    scores = saved;
+  }
+} catch {
+  scores = [0,0];
+}
+
+function updateScores() {
+  document.getElementById("score1").textContent = scores[0];
+  document.getElementById("score2").textContent = scores[1];
+
+  localStorage.setItem("nettihubiScores",JSON.stringify(scores));
+}
+
+function changeScore(player, amount) {
+  const index = player-1;
+  scores[index] = Math.max(0,scores[index]+amount);
+  updateScores();
+}
+
+function resetScores() {
+  scores = [0,0];
+  updateScores();
+}
+
+updateScores();
 
 </script>
 
